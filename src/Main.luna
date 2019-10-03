@@ -1,0 +1,27 @@
+import Std.Base
+import Std.HTTP
+import Std.Geo
+import Std.Time
+
+«14»def getVehicles:
+   «4»response = Http . getJSON "https://opendata.arcgis.com/datasets/55d5b9f7af7d4710bc98743b2c005f02_0.geojson"
+   «5»vehicles = response . getList  "features" 
+   «6»validVehicles = vehicles . filter (_ . lookup "geometry" . isJust)
+   validVehicles
+   
+«1»def formatVehicle a:
+   «7»props = a . get "properties"
+   «8»geometry = a . get "geometry"   
+   «9»feature = GeoJSONFeature props geometry
+   feature
+   
+«2»def generateMap:
+   «10»vehicles = getVehicles
+   «11»formatted = vehicles . each formatVehicle
+   «12»collection = GeoJSONFeatureCollection formatted
+   collection
+   
+«3»def main:
+    «13»map = generateMap
+    None
+### META {"metas":[{"marker":10,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":11,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}},{"marker":12,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":640}}}},{"marker":7,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":8,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":320,"_vector2_x":0}}}},{"marker":9,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}},{"marker":4,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":5,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}},{"marker":6,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":640}}}},{"marker":13,"meta":{"_displayResult":true,"_selectedVisualizer":["LunaVisualizer: map: GeoJSON","map\\geojson.html"],"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}}]}

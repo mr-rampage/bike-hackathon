@@ -1,0 +1,85 @@
+modulesSettings:
+  src/Foo.luna:
+    typeRepToVisMap:
+    - - tag: TCons
+        contents:
+        - Stream
+        - - tag: TCons
+            contents:
+            - GeoJSONFeatureCollection
+            - []
+      - - ! 'map: GeoJSON'
+        - map/geojson.html
+    - - tag: TCons
+        contents:
+        - GeoJSONFeatureCollection
+        - []
+      - - ! 'map: GeoJSON'
+        - map/geojson.html
+    currentBreadcrumb: main
+    breadcrumbsSettings:
+    - - items: []
+      - breadcrumbCameraSettings:
+          logicalToScreen: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]]'
+          screenToLogical: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]]'
+          lastInverse: 0
+    - - items:
+        - main
+      - breadcrumbCameraSettings:
+          logicalToScreen: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]]'
+          screenToLogical: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,0.0,0.0,1.0]]'
+          lastInverse: 0
+  src/Main.luna:
+    typeRepToVisMap:
+    - - tag: TCons
+        contents:
+        - Stream
+        - - tag: TCons
+            contents:
+            - GeoJSONFeatureCollection
+            - []
+      - - ! 'LunaVisualizer: map: GeoJSON'
+        - map/geojson.html
+    currentBreadcrumb: main
+    breadcrumbsSettings:
+    - - items: []
+      - breadcrumbCameraSettings:
+          logicalToScreen: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[-406.0,-102.5,0.0,1.0]]'
+          screenToLogical: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[406.0,102.5,0.0,1.0]]'
+          lastInverse: 0
+    - - items:
+        - foo
+      - breadcrumbCameraSettings:
+          logicalToScreen: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,47.0,0.0,1.0]]'
+          screenToLogical: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[0.0,-47.0,0.0,1.0]]'
+          lastInverse: 0
+    - - items:
+        - formatVehicle
+      - breadcrumbCameraSettings:
+          logicalToScreen: ! '[[0.8113936089322492,0.0,0.0,0.0],[0.0,0.8113936089322492,0.0,0.0],[0.0,0.0,1.0,0.0],[-57.31390883464216,200.69237614750725,0.0,1.0]]'
+          screenToLogical: ! '[[1.2324474693804242,0.0,0.0,0.0],[0.0,1.2324474693804242,0.0,0.0],[0.0,0.0,1.0,0.0],[70.63638190355506,-247.3428111069395,0.0,1.0]]'
+          lastInverse: 0
+    - - items:
+        - generateMap
+      - breadcrumbCameraSettings:
+          logicalToScreen: ! '[[0.591130256652832,0.0,0.0,0.0],[0.0,0.591130256652832,0.0,0.0],[0.0,0.0,1.0,0.0],[-106.50458669662476,-27.194424629211426,0.0,1.0]]'
+          screenToLogical: ! '[[1.69167453153611,0.0,0.0,0.0],[0.0,1.69167453153611,0.0,0.0],[0.0,0.0,1.0,0.0],[180.1710968064597,46.00411554501529,0.0,1.0]]'
+          lastInverse: 0
+    - - items:
+        - getVehicles
+      - breadcrumbCameraSettings:
+          logicalToScreen: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[-388.0,207.0,0.0,1.0]]'
+          screenToLogical: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[388.0,-207.0,0.0,1.0]]'
+          lastInverse: 0
+    - - items:
+        - lol
+      - breadcrumbCameraSettings:
+          logicalToScreen: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[51.5,0.0,0.0,1.0]]'
+          screenToLogical: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[-51.5,0.0,0.0,1.0]]'
+          lastInverse: 0
+    - - items:
+        - main
+      - breadcrumbCameraSettings:
+          logicalToScreen: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[66.0,-94.5,0.0,1.0]]'
+          screenToLogical: ! '[[1.0,0.0,0.0,0.0],[0.0,1.0,0.0,0.0],[0.0,0.0,1.0,0.0],[-66.0,94.5,0.0,1.0]]'
+          lastInverse: 0
