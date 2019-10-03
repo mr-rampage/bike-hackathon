@@ -1,27 +1,50 @@
-import Std.Base
 import Std.HTTP
-import Std.Geo
-import Std.Time
-
-«14»def getVehicles:
-   «4»response = Http . getJSON "https://opendata.arcgis.com/datasets/55d5b9f7af7d4710bc98743b2c005f02_0.geojson"
-   «5»vehicles = response . getList  "features" 
-   «6»validVehicles = vehicles . filter (_ . lookup "geometry" . isJust)
-   validVehicles
+import Std.Base
+import Std.Geo
+import Std.Primitive
+
+«0»def asGeoJSON a:
+   «2»props = a . get "properties"
+   «3»geometry = a . get "geometry"   
+   «4»feature = GeoJSONFeature addDetails(props) geometry
+
+«23»def addDetails props:
+   «26»date = props . getText "DATE"
+   «27»time = props . getText "TIME"
+   «28»visibility = props . getText "VISIBILITY"
+   «29»roadCondition = props . getText "RDSFCOND"
+   «30»accidentSeverity = props . getText "ACCLASS"
+   «31»fatality = props . getText "INJURY"
+   «32»cyclistAct = props . getText "CYCACT"
+   «33»driverAct = props . getText "CYCLISTYPE"
+   «34»age = props . getText "INVAGE"
+   «35»driverAct2 = props . getText "DRIVACT"
+   «36»manoeuver =  props . getText "MANOEUVER"
+   «37»desc = "<div>date: " + date + "</div><div>time: " + time + "</div></div><div>visibility: " + visibility + "</div></div><div>road condition: " + roadCondition + "</div></div><div>accident severity: " + accidentSeverity + "</div></div><div>fatality: " + fatality + "</div></div><div>cyclist act: " + cyclistAct + "</div></div><div>driver act: " + driverAct2 + "</div></div><div>age: " + age + "</div></div><div>driver act2: " + manoeuver + "</div>"
+   «38»decorated = JSON . empty . insert "popupContent" desc . insert "id" "id"
+   decorated
+
+«24»def byYear year property:
+   «12»result = property . getInt "YEAR" == year
+   result
+
+«13»def hasFatalities property: 
+   «14»result = property . getText "FATAL_NO" . toInt > 0
+   «15»result
+
+«42»def fatalitiesByYear year showFatalities property:
+   «43»r1 = byYear year property
+   «45»r2 = if showFatalities then hasFatalities(property) else hasFatalities(property).not
+   «46»result = r1.and r2
+   «44»result
    
-«1»def formatVehicle a:
-   «7»props = a . get "properties"
-   «8»geometry = a . get "geometry"   
-   «9»feature = GeoJSONFeature props geometry
-   feature
-   
-«2»def generateMap:
-   «10»vehicles = getVehicles
-   «11»formatted = vehicles . each formatVehicle
-   «12»collection = GeoJSONFeatureCollection formatted
-   collection
-   
-«3»def main:
-    «13»map = generateMap
+«1»def main:
+    «5»response = Http.getJSON "https://opendata.arcgis.com/datasets/55d5b9f7af7d4710bc98743b2c005f02_0.geojson"
+    «6»accidents = response . getList "features" 
+    «7»year = 2012
+    «47»showFatalities = False
+    «48»withFatalities = accidents . filter ( _ . lookup "properties" . map( fatalitiesByYear year showFatalities ) . get)
+    «41»geoData = withFatalities . map asGeoJSON
+    «10»foo = GeoJSONFeatureCollection geoData
     None
-### META {"metas":[{"marker":10,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":11,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}},{"marker":12,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":640}}}},{"marker":7,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":8,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":320,"_vector2_x":0}}}},{"marker":9,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}},{"marker":4,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":5,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}},{"marker":6,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":640}}}},{"marker":13,"meta":{"_displayResult":true,"_selectedVisualizer":["LunaVisualizer: map: GeoJSON","map\\geojson.html"],"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}}]}
+### META {"metas":[{"marker":14,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":15,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}},{"marker":12,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":26,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":1600,"_vector2_x":320}}}},{"marker":27,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":1920,"_vector2_x":320}}}},{"marker":28,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":2240,"_vector2_x":320}}}},{"marker":29,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":2240,"_vector2_x":320}}}},{"marker":30,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":2240,"_vector2_x":320}}}},{"marker":31,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":2240,"_vector2_x":320}}}},{"marker":32,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":2240,"_vector2_x":320}}}},{"marker":33,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":1600,"_vector2_x":1280}}}},{"marker":34,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":2240,"_vector2_x":320}}}},{"marker":35,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":2240,"_vector2_x":320}}}},{"marker":36,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":2560,"_vector2_x":320}}}},{"marker":37,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":1600,"_vector2_x":640}}}},{"marker":38,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":1600,"_vector2_x":960}}}},{"marker":43,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":45,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":640}}}},{"marker":46,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":960}}}},{"marker":44,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}},{"marker":5,"meta":{"_displayResult":false,"_selectedVisualizer":["LunaVisualizer: base: json","base\\json\\json.html"],"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":6,"meta":{"_displayResult":false,"_selectedVisualizer":["LunaVisualizer: base: table","base\\table\\table.html"],"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}},{"marker":7,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":320,"_vector2_x":320}}}},{"marker":47,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":304,"_vector2_x":624}}}},{"marker":48,"meta":{"_displayResult":false,"_selectedVisualizer":["LunaVisualizer: base: json","base\\json\\json.html"],"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":608}}}},{"marker":41,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":960}}}},{"marker":10,"meta":{"_displayResult":true,"_selectedVisualizer":["LunaVisualizer: base: json","base\\json\\json.html"],"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":1280}}}},{"marker":2,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":0}}}},{"marker":3,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":320,"_vector2_x":0}}}},{"marker":4,"meta":{"_displayResult":false,"_selectedVisualizer":null,"_position":{"fromPosition":{"_vector2_y":0,"_vector2_x":320}}}}]}
